@@ -8,9 +8,9 @@ jobs:
   linting:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-      - uses: actions/cache@v2
+      - uses: github.com/actions/checkout@v2
+      - uses: github.com/actions/setup-python@v2
+      - uses: github.com/actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip
@@ -20,7 +20,10 @@ jobs:
           python -m pip install --upgrade pip virtualenv
           python -m virtualenv .venv
           source .venv/bin/activate
-          pip install -r Ctl/requirements-test.txt
+          pip install -r markdown-include>=0.5.1 mkdocs>=1.0
+          pip install markdown-include 
+          pip install mkdocs
+# Ctl/requirements-test.txt
       - name: Run linters
         run: |
           source .venv/bin/activate
@@ -35,9 +38,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: github.com/actions/checkout@v2
       - name: Set up python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: github.com//actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
@@ -46,8 +49,9 @@ jobs:
           pip install tox tox-gh-actions
       - name: Run tests
         run: tox
+      - name: Download coverage
       - name: Upload coverage
-        uses: codecov/codecov-action@v1
+        uses: github.com/codecov/codecov-action@v1
         with:
           file: ./coverage.xml
           fail_ci_if_error: true
